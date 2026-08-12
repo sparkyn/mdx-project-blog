@@ -1,4 +1,5 @@
 import React from "react";
+import { MotionConfig } from "motion/react";
 import { Work_Sans, Spline_Sans_Mono } from "next/font/google";
 import clsx from "clsx";
 
@@ -39,7 +40,9 @@ function RootLayout({ children }) {
     >
       <body>
         <Header theme={theme} />
-        <main>{children}</main>
+        <main>
+          <MotionConfig reducedMotion="user">{children}</MotionConfig>
+        </main>
         <Footer />
       </body>
     </html>
