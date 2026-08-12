@@ -16,29 +16,33 @@ const COLORS = [
 ];
 
 function CircularColorsDemo() {
+  const id = React.useId();
+
   const [isRunning, setIsRunning] = React.useState(false);
   const [timeElapsed, setTimeElapsed] = React.useState(0);
 
   const selectedColor = COLORS[timeElapsed % COLORS.length];
 
   React.useEffect(() => {
+    if (!isRunning) {
+      return;
+    }
+
     const updateElapsed = window.setInterval(() => {
-      if (isRunning) {
-        const newTimeElapsed = timeElapsed + 1;
-        setTimeElapsed(newTimeElapsed);
-      }
+      setTimeElapsed((currentValue) => currentValue + 1);
     }, 1 * 1000);
 
     return () => {
       window.clearInterval(updateElapsed);
     };
-  }, [isRunning, timeElapsed]);
+  }, [isRunning]);
 
   const handlePlayPauseClick = () => {
     if (isRunning) {
       setIsRunning(false);
     } else {
       setIsRunning(true);
+      setTimeElapsed(timeElapsed + 1);
     }
   };
 
@@ -57,7 +61,7 @@ function CircularColorsDemo() {
             <li className={styles.color} key={index}>
               {isSelected && (
                 <motion.div
-                  layoutId="blockOutline"
+                  layoutId={`${id}-blockOutline`}
                   className={styles.selectedColorOutline}
                 />
               )}
