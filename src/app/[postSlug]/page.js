@@ -1,4 +1,5 @@
 import React from "react";
+import { notFound } from "next/navigation";
 import { loadBlogPost } from "@/helpers/file-helpers";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
@@ -17,7 +18,14 @@ export async function generateMetadata({ params }) {
 }
 
 async function BlogPost({ params }) {
-  const { frontmatter, content } = await loadBlogPost(params.postSlug);
+  const { postSlug } = await params;
+  const blogPostData = await loadBlogPost(postSlug);
+
+  if (!blogPostData) {
+    notFound();
+  }
+
+  const { frontmatter, content } = blogPostData;
 
   return (
     <article className={styles.wrapper}>
